@@ -88,8 +88,8 @@ stats.loc['median'] = median
 
 display(stats)
 ```
-![[Screenshot 2026-02-06 at 13.38.02.png]]
-Distributie van temperatuurwaarden over de jaren & trend in global average land temperatures over de tijd.
+![Distributie van temperatuurwaarden over de jaren & trend in global average land temperatures over de tijd.](img/Screenshot%2026-02-06%at%13.38.02.png)
+
 ```python
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -117,8 +117,8 @@ plt.xlabel('Jaar')
 plt.ylabel('Gemiddelde Temperatuur (°C)')
 plt.show()
 ```
-![[Screenshot 2026-02-06 at 13.41.12.png]]
-![[Screenshot 2026-02-06 at 13.41.33.png]]
+[](img/Screenshot%2026-02-06%at%13.41.12.png)
+[](img/Screenshot%202026-02-06%20at%2013.41.33.png)
 ##### 2 Gerichte dataset
 
 Tijdens de validatie van de brondata bleek dat de tabel `global_temp_country` slechts 271 rijen bevatte en dat. alle datum waarden waren opgeslagen als `0000-00-00`. Dit wees op een foutieve interpretatie van het datum formaat bij het importeren in SQL.
@@ -175,13 +175,13 @@ axes[1].set_title('Top 10 Warmste Landen (Sinds 1980)')
 plt.tight_layout()
 plt.show()
 ```
-![[Screenshot 2026-02-09 at 10.14.09.png]]
+[](img/Screenshot%202026-02-09%20at%2010.14.09.png)
 
 Bij het analyseren van de stedelijke data identificeerde ik steden met een extreem landklimaat. De stad Harbin voert de lijst aan met een temperatuur topwaarde van bijna 49 graden. Voor de visualisatie heb ik gebruikgemaakt van een tijdsreeks-analyse om de enorme jaarlijkse schommelingen in kaart te brengen. 
 
-![[Screenshot 2026-02-09 at 10.27.57.png]]
+[](img/Screenshot%202026-02-09%20at%2010.27.57.png)
 
-![[Screenshot 2026-02-09 at 10.28.32.png]]
+[](img/Screenshot%202026-02-09%20at%2010.28.32.png)
 ##### 3 Uncertainty Analysis
 
 Een cruciaal aspect van klimaatdata is de onzekerheid in metingen. Uit de analyse blijkt een sterk negatief verband tussen tijd en onzekerheid. In de 18e en 19e eeuw was de onzekerheid relatief hoog (vaak boven de 1.0 graden), wat te verklaren is door minder nauwkeurige instrumenten en lagere dichtheid aan meeetstations wereldwijd. 
@@ -282,7 +282,7 @@ except Exception as e:
     print(f" Er ging iets mis: {e}")
 ```
 
-![[Screenshot 2026-02-09 at 11.20.26.png]]![[Screenshot 2026-02-09 at 11.24.07.png]]
+[](img/Screenshot%202026-02-09%20at%2011.20.26)[](img/Screenshot%202026-02-09%20at%2011.24.07.png)
 
 ##### 5 PowerBI
 Plot gemiddelde temperatuur van steden over de wereld ![[Screenshot 2026-02-09 at 15.50.31.png]]

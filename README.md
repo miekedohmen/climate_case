@@ -290,7 +290,7 @@ except Exception as e:
 [Visual5](img/Screenshot%202026-02-09%20at%2011.20.26)[Visual6](img/Screenshot%202026-02-09%20at%2011.24.07.png)
 
 ##### 5 PowerBI
-Plot gemiddelde temperatuur van steden over de wereld ![[Screenshot 2026-02-09 at 15.50.31.png]]
+Plot gemiddelde temperatuur van steden over de wereld [Visual7](img/Screenshot%202026-02-09%20at%2015.50.31.png)
 
 ##### 6 Eindrapportage
 Voor dit onderzoek heb ik gebruikgemaakt van een klimaat dataset die terug gaat tot 1750. Vanwege de grote hoeveelheid ontbrekende waarden in de vroege jaren, is de primaire focus voor de trendanalyse gelegd op de periode vanaf 1980.
@@ -371,7 +371,7 @@ plt.show()
 
 De grafiek laat een duidelijk kantelpunt zien rond het begin van de 21e eeuw. Terwijl de uitstoot van landen zoald de Verenigde Staten en Duitsland stabiliseert of zelfs licht daalt, vertonen opkomende economieen zoals India en met name China een exponentiele stijging. Dit verklaart waarom de wereldwijde gemiddelde tempratuur, ondanks lokale inspanningen in Europa, blijft stijgen.
 
-[Visual7](img/Screenshot%202026-02-17%20at%2009.56.13.png)
+[Visual8](img/Screenshot%202026-02-17%20at%2009.56.13.png)
 
 
 ##### Bevolkingsgroei 
@@ -415,7 +415,7 @@ ax2.plot(df_comb['year'], df_comb['global_temp'], color='tab:red', alpha=0.6, la
 plt.title('Bevolkingsgroei vs. Wereldwijde Opwarming')
 plt.show()
 ```
-[Visual8](img/Screenshot%202026-02-17%20at%2009.56.13.png)
+[Visual9](img/Screenshot%202026-02-17%20at%2009.56.13.png)
 
 #####  Armoede kloof tussen Stedelijk en Ruraal
 
@@ -456,4 +456,4 @@ plt.tight_layout()
 plt.show()
 ```
 
-[Visual9](img/Screenshot%202026-02-17%20at%2012.11.15.png)
+[Visual10](img/Screenshot%202026-02-17%20at%2012.11.15.png)

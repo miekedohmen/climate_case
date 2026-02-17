@@ -414,3 +414,44 @@ plt.title('Bevolkingsgroei vs. Wereldwijde Opwarming')
 plt.show()
 ```
 [](img/Screenshot%202026-02-17%20at%2009.56.13.png)
+
+#####  Armoede kloof tussen Stedelijk en Ruraal
+
+De database is uitgebreid met de Multidimentional Poverty Index (MPI). Deze index is cruciaal omdat het armeode niet slechts meet met inkomen, maar kijkt naar tekorten in onderwijs, gezondheid en levensstandaard.
+
+De integratie van de datasets `MPI_national` en `MPI_subnational` dragen bij aan de gefragmenteerde analyse. De visualisaties tonen aan dat armoede op het platteland (Rural) in de Top 10 meest kwetsbare landen vaak twee tot drie keer zo hoog zijn als in stedelijke gebieden. 
+
+Om de landen onderling te kunnen rangschikken, is een berekende kolom `MPI_average` geintroduceerd. Dit stelt ons in staat om de algemene ernst an de situatie per land uit te rekenen.
+
+```python 
+
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Bereken een gemiddelde MPI om op te kunnen sorteren
+df_mpi['MPI_Average'] = (df_mpi['MPI Urban'] + df_mpi['MPI Rural']) / 2
+
+# Selecteer de top 10 meest arme landen
+top_10 = df_mpi.sort_values(by='MPI_Average', ascending=False).head(10)
+
+# Data smelten voor een gegroepeerde barplot
+df_plot = top_10.melt(id_vars='Country', value_vars=['MPI Urban', 'MPI Rural'], 
+                      var_name='Gebied', value_name='MPI_Score')
+
+# Visualisatie
+plt.figure(figsize=(12, 7))
+sns.set_style("whitegrid")
+
+sns.barplot(data=df_plot, x='MPI_Score', y='Country', hue='Gebied', palette='viridis')
+
+plt.title('Kloof tussen Stedelijke en Rurale Armoede (Top 10 Landen)', fontsize=15, fontweight='bold')
+plt.xlabel('MPI Score (Hoger = Meer Armoede)', fontsize=12)
+plt.ylabel('Land', fontsize=12)
+plt.legend(title='Locatie')
+
+plt.tight_layout()
+plt.show()
+```
+
+[](img/Screenshot%202026-02-17%20at%2012.11.15.png)

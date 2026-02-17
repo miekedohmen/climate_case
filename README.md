@@ -88,7 +88,11 @@ stats.loc['median'] = median
 
 display(stats)
 ```
-![Distributie van temperatuurwaarden over de jaren & trend in global average land temperatures over de tijd.](img/Screenshot%2026-02-06%at%13.38.02.png)
+
+<img src='img/file.png'>
+> Distributie van temperatuurwaarden over de jaren & trend in global average land temperatures over de tijd.
+
+
 
 ```python
 import matplotlib.pyplot as plt
@@ -175,13 +179,13 @@ axes[1].set_title('Top 10 Warmste Landen (Sinds 1980)')
 plt.tight_layout()
 plt.show()
 ```
-[](img/Screenshot%202026-02-09%20at%2010.14.09.png)
+[Visual1](img/Screenshot%202026-02-09%20at%2010.14.09.png)
 
 Bij het analyseren van de stedelijke data identificeerde ik steden met een extreem landklimaat. De stad Harbin voert de lijst aan met een temperatuur topwaarde van bijna 49 graden. Voor de visualisatie heb ik gebruikgemaakt van een tijdsreeks-analyse om de enorme jaarlijkse schommelingen in kaart te brengen. 
 
-[](img/Screenshot%202026-02-09%20at%2010.27.57.png)
+[Visual2](img/Screenshot%202026-02-09%20at%2010.27.57.png)
 
-[](img/Screenshot%202026-02-09%20at%2010.28.32.png)
+[Viausl3](img/Screenshot%202026-02-09%20at%2010.28.32.png)
 ##### 3 Uncertainty Analysis
 
 Een cruciaal aspect van klimaatdata is de onzekerheid in metingen. Uit de analyse blijkt een sterk negatief verband tussen tijd en onzekerheid. In de 18e en 19e eeuw was de onzekerheid relatief hoog (vaak boven de 1.0 graden), wat te verklaren is door minder nauwkeurige instrumenten en lagere dichtheid aan meeetstations wereldwijd. 
@@ -317,3 +321,96 @@ Land vs. Oceaan: De onzekerheid bij gecombineerde land- en oceaanmetingen is vaa
 De visuele analyse op de wereldkaart toont aan dat de opwarming niet uniform is; bepaalde breedtegraden en stedelijke gebieden (vooral in het noordeling halfrond) vertonen scherpere extremen.
 
 
+###### BONUS OPDRACHT 
+##### CO2 uitstoot per land
+
+Ik heb mijn data van Kaglle gehaald. Dit is een website waar wetenschappers en onderzoekers hun gegevens delen. 
+
+Om de impact van de grootste industriele spelers te isoleren, is een gerichte SQL-query uitgevoerd op de landen die gezamelijk verantwoordelijk zijn voor het grootste deel van de wereldwijde CO2-emissies. Door de focus te leggen op de periode vanaf 1980, worde de versnelling van de industriele groei (met name in opkomende economieem zoals China en India) duidelijk zichtbaar ten opzichte van de stabielere uitstoot van westerse landen
+
+```SQL
+
+SELECT 
+    country_name AS Country, 
+    CAST(year AS UNSIGNED) AS Year, 
+    SUM(CAST(value AS DOUBLE)) AS Total_CO2_kt
+FROM 
+    co2_emissions_kt_by_country
+WHERE 
+    country_name IN ('China', 'United States', 'India', 'Russia', 'Japan', 'Germany')
+    AND year >= 1980
+GROUP BY 
+    country_name, year
+ORDER BY 
+    year ASC, Total_CO2_kt DESC;
+
+```
+
+In plaats van alle landen wereldwijd te tonen, focust de grafiek op de Industriele Grootmachten. De reden hiervoor is dat de CO2-uistoot van deze landen zo dominant is, dat de data van kleinere landen als "ruis" zou fungeren. Door deze filter onstaat er een helder beeld van de landen die de grootste stempel drukken op de wereldwijde emissiecijfers.
+
+```Python
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Maak een plot met twee assen omdat CO2 (kt) en Temp (°C) andere schalen hebben
+plt.figure(figsize=(14, 7))
+
+# Focus op CO2 trend voor deze landen
+sns.lineplot(data=df, x='year', y='co2_value', hue='Country', marker='o')
+
+plt.title('CO2-uitstoot van Industriële Grootmachten (1980-heden)', fontsize=15)
+plt.xlabel('Jaar', fontsize=12)
+plt.ylabel('CO2 Uitstoot (kt)', fontsize=12)
+plt.legend(title='Land', bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.grid(True, linestyle='--', alpha=0.7)
+plt.show()
+
+```
+
+De grafiek laat een duidelijk kantelpunt zien rond het begin van de 21e eeuw. Terwijl de uitstoot van landen zoald de Verenigde Staten en Duitsland stabiliseert of zelfs licht daalt, vertonen opkomende economieen zoals India en met name China een exponentiele stijging. Dit verklaart waarom de wereldwijde gemiddelde tempratuur, ondanks lokale inspanningen in Europa, blijft stijgen.
+
+[](img/Screenshot%202026-02-17%20at%2009.56.13.png)
+
+##### Bevolkingsgroei 
+
+Om een beter beeld te krijgen van klimaatverandering is de database `climate_watch` uitgebreid met data uit het bestand `World Population Growth.csv`.
+
+Ik heb ervoor gekozen om bevolkingsdata via de opdrachtprompt (CLI) in te laden in plaats van de importfunctie van phpMyAdmin. De reden hiervoor is dat ik meer controle krijg over hoe de database de kolommen van het .csv bestand leest.
+
+Om de juiste data op te halen, heb ik een SQL-query direct in mijn Python-code verwerkt.
+
+Door middel van een `JOIN` heb ik de tabel `world_population_growth` gekoppeld aan de temperatuurdata uit `cleaned_global_temp_country`. Ik heb de database opdracht gegeven om deze rijen te matchen op bases van het jaar (`p.year = YEAR(t.dt)`). Omdat de temperatuurdata per maand en per land was opgeslagen heb ik `AVG(t.AverageTemperature)` gebruikt om een representatief wereldwijd jaargemiddelde te krijgen voor een tijdlijn.
+
+```python
+query_comb = """
+SELECT 
+    p.year, 
+    p.population, 
+    AVG(t.AverageTemperature) as global_temp
+FROM 
+    world_population_growth p
+JOIN 
+    cleaned_global_temp_country t ON p.year = YEAR(t.dt)
+GROUP BY 
+    p.year
+"""
+df_comb = pd.read_sql(query_comb, engine)
+
+# Plot maken met twee assen
+fig, ax1 = plt.subplots(figsize=(12, 6))
+
+# Bevolking op de eerste as
+ax1.set_xlabel('Jaar')
+ax1.set_ylabel('Wereldbevolking', color='tab:blue')
+ax1.plot(df_comb['year'], df_comb['population'], color='tab:blue', linewidth=3, label='Bevolking')
+
+# Temperatuur op de tweede as (rechts)
+ax2 = ax1.twinx()
+ax2.set_ylabel('Gem. Temperatuur (°C)', color='tab:red')
+ax2.plot(df_comb['year'], df_comb['global_temp'], color='tab:red', alpha=0.6, label='Temperatuur')
+
+plt.title('Bevolkingsgroei vs. Wereldwijde Opwarming')
+plt.show()
+```
+[](img/Screenshot%202026-02-17%20at%2009.56.13.png)

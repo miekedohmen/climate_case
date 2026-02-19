@@ -32,8 +32,8 @@ Cleaning
 - In de eerste regel van de `for`-loop haal ik de data op uit SQL en pas ik direct de eisen van de opdracht toe. Ik gebruik `pd.to_datetime` met `errors='coerce'` om van de datum-tekst een echt tijdsobject te maken. De 'ruis' verander ik hiermee in een leeg veld, zodat ik die rijen daarna met `dropna()` makkelijk kan verwijderen
 - (`sort values`) Dit is belangrijk voor de interpolatie. Je kunt alleen een lijn trekken tussen twee punten als ze op de juiste volgorde staan. Ik sorteer de data eerst op locatie en daarna chronologisch op datum.
 - `groupby`+`transform`. Ik gebruik `groupby` om de dataset op te splitsen in kleine groepjes. Binnen dat groepje pas ik `interpolate` toe. Mocht er dan aan het begin of eind van de reeks nog iets missen, gebruik ik de fallback `fillna(x.mean())` Dit vult de laatse gaten met het gemiddelde van dat specifieke land.
-```python
 
+```python
 # Configuratie per tabel: welke kolommen bepalen de unieke locatie?
 tables_config = {
     'global_temperatures': [],  
@@ -89,10 +89,7 @@ stats.loc['median'] = median
 display(stats)
 ```
 
-<img src='img/file.png'>
-> Distributie van temperatuurwaarden over de jaren & trend in global average land temperatures over de tijd.
-
-
+[Distributie van temperatuurwaarden over de jaren & trend in global average land temperatures over de tijd.]<img src='img/average-land-ocean.png'>
 
 ```python
 import matplotlib.pyplot as plt
@@ -121,8 +118,8 @@ plt.xlabel('Jaar')
 plt.ylabel('Gemiddelde Temperatuur (°C)')
 plt.show()
 ```
-[](img/Screenshot%2026-02-06%at%13.41.12.png)
-[](img/Screenshot%202026-02-06%20at%2013.41.33.png)
+[Jaarlijkse groepering](img/GLOBAL-temp-dis.png)
+[Visualisatie an de trend](img/TREND-global-temp.png)
 ##### 2 Gerichte dataset
 
 Tijdens de validatie van de brondata bleek dat de tabel `global_temp_country` slechts 271 rijen bevatte en dat. alle datum waarden waren opgeslagen als `0000-00-00`. Dit wees op een foutieve interpretatie van het datum formaat bij het importeren in SQL.
@@ -179,13 +176,11 @@ axes[1].set_title('Top 10 Warmste Landen (Sinds 1980)')
 plt.tight_layout()
 plt.show()
 ```
-[Visual1](img/Screenshot%202026-02-09%20at%2010.14.09.png)
+[Visualisate van temperatuur veranderingen voor specifieke steden over de tijd.](img/HOT-COLD.png)
+[Visualisatie an de koudste & warmste landen.](img/Screenshot%202026-02-09%20at%2010.14.09.png)
 
 Bij het analyseren van de stedelijke data identificeerde ik steden met een extreem landklimaat. De stad Harbin voert de lijst aan met een temperatuur topwaarde van bijna 49 graden. Voor de visualisatie heb ik gebruikgemaakt van een tijdsreeks-analyse om de enorme jaarlijkse schommelingen in kaart te brengen. 
 
-[Visual2](img/Screenshot%202026-02-09%20at%2010.27.57.png)
-
-[Visual3](img/Screenshot%202026-02-09%20at%2010.28.32.png)
 ##### 3 Uncertainty Analysis
 
 Een cruciaal aspect van klimaatdata is de onzekerheid in metingen. Uit de analyse blijkt een sterk negatief verband tussen tijd en onzekerheid. In de 18e en 19e eeuw was de onzekerheid relatief hoog (vaak boven de 1.0 graden), wat te verklaren is door minder nauwkeurige instrumenten en lagere dichtheid aan meeetstations wereldwijd. 
@@ -219,8 +214,9 @@ try:
 ```
 
 Land vs. Oceaan: opvallend is dat de onzekerheid door de gecombineerde Land- en Oceaanmetingen vaak lager of stabieler is dan voor alleen land. 
-[Visual 4](img/Screenshot%202026-02-09%20at%2010.48.00.png)
-
+[Uncertainty waardes in global temperatures](img/UNCERTAINTY-TEMP.png)
+[Verband tussen uncertainty en tijd](img/UNCERTAINTY-TIME.png)
+[Land & Ocean uncertainty temperaturs](img/L&O-uncertainty.png)
 
 ##### 4 Geospatial Analyse
 
@@ -287,10 +283,7 @@ except Exception as e:
     print(f" Er ging iets mis: {e}")
 ```
 
-[Visual5](img/Screenshot%202026-02-09%20at%2011.20.26)[Visual6](img/Screenshot%202026-02-09%20at%2011.24.07.png)
-
-##### 5 PowerBI
-Plot gemiddelde temperatuur van steden over de wereld [Visual7](img/Screenshot%202026-02-09%20at%2015.50.31.png)
+[Geospatial Analysis](img/TEMP-CITY.png)
 
 ##### 6 Eindrapportage
 Voor dit onderzoek heb ik gebruikgemaakt van een klimaat dataset die terug gaat tot 1750. Vanwege de grote hoeveelheid ontbrekende waarden in de vroege jaren, is de primaire focus voor de trendanalyse gelegd op de periode vanaf 1980.
@@ -371,8 +364,7 @@ plt.show()
 
 De grafiek laat een duidelijk kantelpunt zien rond het begin van de 21e eeuw. Terwijl de uitstoot van landen zoald de Verenigde Staten en Duitsland stabiliseert of zelfs licht daalt, vertonen opkomende economieen zoals India en met name China een exponentiele stijging. Dit verklaart waarom de wereldwijde gemiddelde tempratuur, ondanks lokale inspanningen in Europa, blijft stijgen.
 
-[Visual8](img/Screenshot%202026-02-17%20at%2009.56.13.png)
-
+[CO2 uitstoot per regio](img/CO2-perregio.png)
 
 ##### Bevolkingsgroei 
 
@@ -415,7 +407,7 @@ ax2.plot(df_comb['year'], df_comb['global_temp'], color='tab:red', alpha=0.6, la
 plt.title('Bevolkingsgroei vs. Wereldwijde Opwarming')
 plt.show()
 ```
-[Visual9](img/Screenshot%202026-02-17%20at%2009.56.13.png)
+[Bevolkingsgroei wereldwijd](img/bevolkingsgroei-ww.png)
 
 #####  Armoede kloof tussen Stedelijk en Ruraal
 
@@ -456,4 +448,4 @@ plt.tight_layout()
 plt.show()
 ```
 
-[Visual10](img/Screenshot%202026-02-17%20at%2012.11.15.png)
+[Armoede kloof tussen Stedelijk en Ruraal](img/Rural-Urban.png)
